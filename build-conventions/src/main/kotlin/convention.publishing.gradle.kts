@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.konan.target.HostManager
 import util.Git
 
 plugins {
@@ -52,8 +51,6 @@ signing {
         sign(publishing.publications)
     }
 }
-
-val isMainHost = HostManager.simpleOsName().equals("${project.findProperty("project.mainOS")}", true)
 
 publishing {
     publications {
