@@ -25,8 +25,8 @@ dependencies {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions {
-            languageVersion = "1.4" // 1.9 since gradle 8
+        compilerOptions {
+            version = "1.9"
         }
     }
 }

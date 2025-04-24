@@ -9,6 +9,12 @@ android {
     namespace = "org.reduxkotlin"
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 kotlin {
     sourceSets {
         jvmCommonTest {

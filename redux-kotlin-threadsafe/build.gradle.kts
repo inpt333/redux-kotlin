@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import util.jvmCommonTest
 
 plugins {
@@ -8,6 +9,12 @@ plugins {
 
 android {
     namespace = "org.reduxkotlin.threadsafe"
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 kotlin {
@@ -29,14 +36,14 @@ kotlin {
 afterEvaluate {
     tasks {
         // Alias the task names we use elsewhere to the new task names.
-        create("installMP").dependsOn("publishKotlinMultiplatformPublicationToMavenLocal")
-        create("installLocally") {
+        register("installMP").dependsOn("publishKotlinMultiplatformPublicationToMavenLocal")
+        register("installLocally") {
             dependsOn("publishKotlinMultiplatformPublicationToTestRepository")
             dependsOn("publishJvmPublicationToTestRepository")
             dependsOn("publishJsPublicationToTestRepository")
             dependsOn("publishMetadataPublicationToTestRepository")
         }
-        create("installIosLocally") {
+        register("installIosLocally") {
             dependsOn("publishKotlinMultiplatformPublicationToTestRepository")
             dependsOn("publishIosArm32PublicationToTestRepository")
             dependsOn("publishIosArm64PublicationToTestRepository")
@@ -44,7 +51,7 @@ afterEvaluate {
             dependsOn("publishMetadataPublicationToTestRepository")
         }
         // NOTE: We do not alias uploadArchives because CI runs it on Linux and we only want to run it on Mac OS.
-        // tasks.create("uploadArchives").dependsOn("publishKotlinMultiplatformPublicationToMavenRepository")
+        // tasks.register("uploadArchives").dependsOn("publishKotlinMultiplatformPublicationToMavenRepository")
     }
 }
 
