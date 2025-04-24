@@ -31,7 +31,7 @@ public class ThreadSafeStore<State>(override val store: Store<State>) :
         synchronized(this) { store.replaceReducer(reducer) }
     }
 
-    override val subscribe: (StoreSubscriber) -> StoreSubscription = { storeSubscriber ->
+    override val subscribe: (StoreSubscriber<State>) -> StoreSubscription = { storeSubscriber ->
         synchronized(this) { store.subscribe(storeSubscriber) }
     }
 }

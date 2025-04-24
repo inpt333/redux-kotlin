@@ -42,7 +42,7 @@ public fun <State> createSameThreadEnforcedStore(
             store.dispatch(action)
         }
 
-        override val subscribe = { storeSubscriber: StoreSubscriber ->
+        override val subscribe = { storeSubscriber: StoreSubscriber<State> ->
             checkSameThread()
             store.subscribe(storeSubscriber)
         }

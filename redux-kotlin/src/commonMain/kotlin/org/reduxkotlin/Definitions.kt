@@ -21,7 +21,7 @@ public typealias TypedReducer<State, Action> = (state: State, action: Action) ->
 public typealias ReducerForActionType<TState, TAction> = (state: TState, action: TAction) -> TState
 
 public typealias GetState<State> = () -> State
-public typealias StoreSubscriber = () -> Unit
+public typealias StoreSubscriber<State> = (State) -> Unit
 public typealias StoreSubscription = () -> Unit
 public typealias Dispatcher = TypedDispatcher<Any>
 public typealias TypedDispatcher<Action> = (Action) -> Any
@@ -57,7 +57,7 @@ public inline fun <State, reified Action : Any> Store<State>.asTyped(): TypedSto
         override val store: Store<State> = this@asTyped
         override val getState: GetState<State> = this@asTyped.getState
         override var dispatch: TypedDispatcher<Action> = this@asTyped.dispatch
-        override val subscribe: (StoreSubscriber) -> StoreSubscription = this@asTyped.subscribe
+        override val subscribe: (StoreSubscriber<State>) -> StoreSubscription = this@asTyped.subscribe
         override val replaceReducer: (TypedReducer<State, Action>) -> Unit = {
             this@asTyped.replaceReducer(typedReducer(it))
         }
@@ -86,7 +86,7 @@ public interface TypedStore<State, Action> {
      * Subscribes to state's updates.
      * Subscription returns [StoreSubscription] that can be invoked to unsubscribe from further updates.
      */
-    public val subscribe: (StoreSubscriber) -> StoreSubscription
+    public val subscribe: (StoreSubscriber<State>) -> StoreSubscription
 
     /**
      * Replace store's reducer with a new implementation

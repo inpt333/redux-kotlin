@@ -45,7 +45,7 @@ public fun <State> createStore(
 
     var currentReducer = reducer
     var currentState = preloadedState
-    var currentListeners = mutableListOf<() -> Unit>()
+    var currentListeners = mutableListOf<(State) -> Unit>()
     var nextListeners = currentListeners
     var isDispatching = false
 
@@ -108,7 +108,7 @@ public fun <State> createStore(
      * dispatch.
      * @returns {StoreSubscription} A fun  to remove this change listener.
      */
-    fun subscribe(listener: StoreSubscriber): StoreSubscription {
+    fun subscribe(listener: StoreSubscriber<State>): StoreSubscription {
         check(!isDispatching) {
             """|You may not call store.subscribe() while the reducer is executing.
              |If you would like to be notified after the store has been updated, 
@@ -199,7 +199,7 @@ public fun <State> createStore(
 
         val listeners = nextListeners
         currentListeners = nextListeners
-        listeners.forEach { it() }
+        listeners.forEach { it(currentState) }
 
         return action
     }
